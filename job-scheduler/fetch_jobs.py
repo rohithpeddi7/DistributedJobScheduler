@@ -8,6 +8,7 @@ import time
 import os
 from kafka import KafkaProducer
 from config import *
+import json
 
 producer = KafkaProducer(bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS)
 
@@ -31,10 +32,17 @@ async def job_fetcher(db):
 
         cursor = collection.find({"next_run_at":{"$lte": current_time}}).sort("next_run_at")
         for document in await cursor.to_list():
-            producer.send(document)
+
+            doc_to_send = {"job_id": str(document["_id"]), "scheduled_time" : document["next_run_at"].isoformat() + "Z", "dockerfile_url": document["dockerfile_name"]}
+            print("Debug: ", doc_to_send)
+            producer.send(JOBS_TOPIC, json.dumps(doc_to_send).encode("utf-8"))
             print(document)
             job_id = document["_id"]
             cron_expression = document["cron_expression"]
+            if document["is_one_time"]:
+                result = await collection.delete_one({"_id": job_id})
+                # print(result)
+                continue
             next_run_at = croniter(cron_expression, current_time).get_next(datetime)
             result = await collection.replace_one({"_id": job_id}, {**document, "next_run_at":next_run_at})
             print(result)
