@@ -1,6 +1,7 @@
 import time, uuid, threading, requests, subprocess, os
 from kafka_utils import get_producer, get_consumer
 from config import *
+import json
 
 WORKER_ID = f"worker-{uuid.uuid4().hex[:6]}"
 producer = get_producer()
@@ -48,7 +49,7 @@ def run_docker_container(image_tag):
 
 def execute_job(job):
     job_id = job['job_id']
-    docker_url = job['dockerfile_blob']
+    docker_url = job['dockerfile_url']
     image_tag = f"{WORKER_ID}-{job_id}"
 
     try:
@@ -68,7 +69,8 @@ def execute_job(job):
         "job_id": job_id,
         "status": status,
         "output": output,
-        "timestamp": time.time()
+        "timestamp": time.time(),
+        "exit_code": 0 if status == "success" else 1,
     })
     announce_availability()
 
@@ -79,4 +81,5 @@ if __name__ == "__main__":
 
     for msg in consumer:
         job = msg.value
+        job = json.loads(job.decode('utf-8'))
         execute_job(job)

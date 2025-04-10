@@ -1,11 +1,11 @@
 sudo docker-compose up --build
 
-docker exec -it kafka1 kafka-topics \
-  --create \
-  --topic jobs-topic \
-  --bootstrap-server localhost:29192 \
-  --replication-factor 2 \
-  --partitions 3
+# docker exec -it kafka1 kafka-topics \
+#   --create \
+#   --topic jobs-topic \
+#   --bootstrap-server localhost:29192 \
+#   --replication-factor 2 \
+#   --partitions 3
 
   # Exec into kafka1 container
 docker exec -it kafka1 bash

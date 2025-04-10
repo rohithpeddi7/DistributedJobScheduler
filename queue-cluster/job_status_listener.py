@@ -16,6 +16,6 @@ for message in consumer:
     status = message.value
     print(f"📦 Job ID: {status['job_id']}")
     print(f"   🧑‍🔧 Worker: {status['worker_id']}")
-    print(f"   ✅ Status: {status['status']} (code: {status['exit_code']})")
+    print(f"   ✅ Status: {status['status']} ")
     print(f"   🕒 Time: {status['timestamp']}")
-    print(f"   📄 Logs: {status['logs'][:200]}...\n")
+    # print(f"   📄 Logs: {status['logs'][:200]}...\n")
