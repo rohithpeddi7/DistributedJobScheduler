@@ -1,3 +1,4 @@
+import asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 from datetime import datetime
@@ -22,7 +23,7 @@ async def job_fetcher(db):
 
     while True:
 
-        time.sleep(40)
+        await asyncio.sleep(10)
 
         collection = db.scheduled_jobs
 
@@ -31,13 +32,15 @@ async def job_fetcher(db):
         cursor = collection.find({"next_run_at":{"$lte": current_time}}).sort("next_run_at")
         for document in await cursor.to_list():
             producer.send(document)
+            print(document)
             job_id = document["_id"]
             cron_expression = document["cron_expression"]
-            next_run_at = croniter(croniter, current_time).next(datetime)
-            result = await collection.replace_one({"_id": job_id}, {"next_run_at":next_run_at})
+            next_run_at = croniter(cron_expression, current_time).get_next(datetime)
+            result = await collection.replace_one({"_id": job_id}, {**document, "next_run_at":next_run_at})
+            print(result)
 
+if __name__=="__main__":
 
-
-    
+    asyncio.run(job_fetcher(mongodb))
 
 
