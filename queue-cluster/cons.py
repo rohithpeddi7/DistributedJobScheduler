@@ -2,8 +2,8 @@
 from kafka import KafkaConsumer
 
 consumer = KafkaConsumer(
-    'my-topic',
-    bootstrap_servers='localhost:29092',
+    'jobs-topic',
+    bootstrap_servers='localhost:29192',
     auto_offset_reset='earliest',
     group_id='my-group'
 )
