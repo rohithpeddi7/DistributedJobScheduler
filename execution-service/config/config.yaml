@@ -1,0 +1,34 @@
+node:
+  type: "coordinator"
+  id: "coordinator-1"
+  address: "localhost:8083"
+
+workers:
+  max_concurrent_jobs: 5
+  retry_limit: 3
+  heartbeat_interval: 5s
+  list:
+    - name: "worker-1"
+      id: "worker-1"
+      type: "worker"
+      address: "http://localhost:8080"
+    - name: "worker-2"
+      id: "worker-2"
+      type: "worker"
+      address: "http://localhost:8081"
+    - name: "worker-3"
+      id: "worker-3"
+      type: "worker"
+      address: "http://localhost:8082"
+
+kafka:
+  brokers:
+    - "localhost:29192"
+  topic: "jobs-topic"
+  auto_offset_reset: "earliest"
+  group_id: "my-group"
+
+logging:
+  level: info
+  format: json
+  output: stdout
