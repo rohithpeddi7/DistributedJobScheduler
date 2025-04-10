@@ -23,7 +23,7 @@ async def job_fetcher(db):
 
     while True:
 
-        await asyncio.sleep(10)
+        await asyncio.sleep(50)
 
         collection = db.scheduled_jobs
 
