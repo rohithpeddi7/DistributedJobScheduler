@@ -1,0 +1,15 @@
+# pycache
+
+__pycache__
+
+# env
+
+.env
+
+# firebase creds
+
+firebase-creds.json
+
+# virtual environments
+
+virt
