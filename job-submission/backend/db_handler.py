@@ -13,7 +13,9 @@ async def add_job_to_db(db, dockerfile_name, cron_expression, is_one_time):
         _cron = croniter(cron_expression, base)
         next_run_at = _cron.get_next(datetime)
     else:
-        next_run_at = datetime(cron_expression)
+        print(cron_expression)
+        next_run_at = datetime.strptime(cron_expression, "%Y-%m-%dT%H:%M")
+        print(next_run_at)
 
     document = {"dockerfile_name": dockerfile_name, 
                 "is_one_time": is_one_time, 

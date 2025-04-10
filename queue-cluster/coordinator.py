@@ -31,15 +31,16 @@ def monitor_workers():
         for worker in to_remove:
             print(f"[Coordinator] Worker {worker} unresponsive.")
             available_workers.discard(worker)
-        time.sleep(2)
+        time.sleep(10)
 
 def assign_jobs():
     consumer = get_consumer(JOBS_TOPIC, group_id="my-group")
     for msg in consumer:
-        if not available_workers:
+        while not available_workers:
             print("No workers available, will retry later.")
-            time.sleep(2)
+            time.sleep(5)
             continue
+        print(msg)
         if msg.value is None or msg.value == {}:
             print("Received None message, skipping.")
             continue
@@ -49,7 +50,7 @@ def assign_jobs():
         print(f"[Coordinator] Assigning job {job['job_id']} to {worker_id}")
         producer.send(worker_id, job)
 
-        if not available_workers:
+        while not available_workers:
             print("No workers available, will retry later.")
             time.sleep(2)
             continue

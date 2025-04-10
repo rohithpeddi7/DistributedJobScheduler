@@ -13,3 +13,8 @@ firebase-creds.json
 # virtual environments
 
 virt
+vir*
+
+# tmp directories
+
+tmp*
