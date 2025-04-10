@@ -15,37 +15,38 @@ def announce_availability():
     producer.send(WORKER_AVAILABILITY_TOPIC, {"worker_id": WORKER_ID, "timestamp": time.time()})
 
 def fetch_dockerfile(blob_url):
-    # resp = requests.get(blob_url)
-    # resp.raise_for_status()
-    # return resp.text
-    return "some_url"
+    resp = requests.get(blob_url)
+    resp.raise_for_status()
+    return resp.text
+    # return "some_url"
 
 def build_docker_image(dockerfile_content, image_tag):
-    # temp_dir = f"./tmp_{uuid.uuid4().hex[:6]}"
-    # os.makedirs(temp_dir, exist_ok=True)
-    # with open(f"{temp_dir}/Dockerfile", "w") as f:
-    #     f.write(dockerfile_content)
-    # result = subprocess.run(
-    #     ["docker", "build", "-t", image_tag, "."],
-    #     cwd=temp_dir,
-    #     capture_output=True,
-    #     text=True
-    # )
-    # if result.returncode != 0:
-    #     raise RuntimeError(result.stderr)
-    # return image_tag
-    return "image_tag"
+    temp_dir = f"./tmp_{WORKER_ID}"
+    os.makedirs(temp_dir, exist_ok=True)
+    with open(f"{temp_dir}/Dockerfile", "w") as f:
+        f.write(dockerfile_content)
+    result = subprocess.run(
+        ["docker", "build", "-t", image_tag, "."],
+        cwd=temp_dir,
+        capture_output=True,
+        text=True
+    )
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr)
+    return image_tag
+    # return "image_tag"
 
 def run_docker_container(image_tag):
-    # result = subprocess.run(
-    #     ["docker", "run", "--rm", image_tag],
-    #     capture_output=True,
-    #     text=True
-    # )
-    # if result.returncode != 0:
-    #     raise RuntimeError(result.stderr)
-    # return result.stdout
-    return "output"
+    result = subprocess.run(
+        ["docker", "run", "--rm", image_tag],
+        capture_output=True,
+        text=True
+    )
+    print(result)
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr)
+    return result.stdout
+    # return "output"
 
 def execute_job(job):
     job_id = job['job_id']
