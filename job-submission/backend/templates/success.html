@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Submitted</title>
+  <script>
+    function goBack() {
+      window.location.href = "/";
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f7f8;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .dialog {
+      background: #ffffff;
+      display: inline-block;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #28a745;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="dialog">
+    <h2>Job Submitted Successfully!</h2>
+    <p>Job ID: {{ job_id }}</p>
+    <button onclick="goBack()">OK</button>
+  </div>
+</body>
+</html>

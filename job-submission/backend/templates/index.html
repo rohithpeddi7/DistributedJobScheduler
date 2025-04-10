@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Scheduler</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e9ecef;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #007BFF;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    input[type="datetime-local"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    input[type="submit"] {
+      background-color: #007BFF;
+      color: #fff;
+      padding: 14px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
+
+  <script>
+    function toggleScheduleInputs() {
+      const checkbox = document.getElementById('is_one_time_checkbox');
+      const cronInput = document.getElementById('cron_expression_container');
+      const dateTimeInput = document.getElementById('scheduled_time_container');
+
+      if (checkbox.checked) {
+        cronInput.style.display = 'none';
+        dateTimeInput.style.display = 'block';
+      } else {
+        cronInput.style.display = 'block';
+        dateTimeInput.style.display = 'none';
+      }
+    }
+
+    window.onload = function () {
+      toggleScheduleInputs();
+      document.getElementById('is_one_time_checkbox').addEventListener('change', toggleScheduleInputs);
+    };
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Submit a Job</h2>
+    <form action="/jobs" enctype="multipart/form-data" method="post">
+      <label for="dockerfile_for_job_scheduling">Select your Dockerfile</label>
+      <input name="file" type="file" id="dockerfile_for_job_scheduling" required>
+      <input name="is_one_time" type="hidden" value="false">
+
+      <label>
+        <input name="is_one_time" type="checkbox" id="is_one_time_checkbox">
+        One-time job?
+      </label>
+
+      <div id="cron_expression_container">
+        <label for="cron_expression">Cron Expression</label>
+        <input name="cron_expression" type="text" id="cron_expression">
+      </div>
+
+      <div id="scheduled_time_container" style="display: none;">
+        <label for="scheduled_time">Scheduled Time</label>
+        <input name="scheduled_time" type="datetime-local" id="scheduled_time">
+      </div>
+
+      <input type="submit" value="Submit Job">
+    </form>
+  </div>
+</body>
+</html>
