@@ -44,6 +44,7 @@ User → FastAPI + UI → MongoDB
 - 🍃 MongoDB (for job metadata)
 - 🐘 Apache Kafka (message queue for coordination)
 - 🌐 Firebase (Dockerfile hosting)
+- 🔄 Golang (for REST Execution Service)
 
 ---
 
