@@ -24,7 +24,7 @@ async def job_fetcher(db):
 
     while True:
 
-        await asyncio.sleep(50)
+        await asyncio.sleep(10) # How many seconds to wait before checking for new jobs
 
         collection = db.scheduled_jobs
 
